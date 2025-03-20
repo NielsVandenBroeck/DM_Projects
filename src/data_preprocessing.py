@@ -87,12 +87,14 @@ df = pd.read_csv("../datasets/retail.csv")
 
 df = fill_in_missing_values(df)
 
-df = prune_dataset(df, "InvoiceDate", 5, False)
+df = prune_dataset(df, "InvoiceDate", 60, False)
 
 # Convert InvoiceDate to datetime format
 df["InvoiceDate"] = pd.to_datetime(df["InvoiceDate"])
 
 df["TimeCategory"] = df["InvoiceDate"].dt.hour.apply(categorize_time)
+
+df["DayOfWeek"] = df["InvoiceDate"].dt.day_name() # or dt.dayofweek()
 
 # Categorize UnitPrice into bins
 df["PriceCategory"] = pd.qcut(df["Price"], q=3, labels=["Cheap", "Mid-Range", "Expensive"], duplicates="drop")
